@@ -25,7 +25,9 @@ function verifyIfElementExistsOnArray() {
 
 function DoPingOnUrl()
 {
-    ping -c1 $1 | cut -d " " -f3 -z | sed -e 's/(//' | sed -e 's/)//'
+    linkReplaced="$(echo "$1" | sed -e 's#^http://##;' | sed -e 's#^https://##;')"
+    output="$(ping -c1 $linkReplaced | cut -d " " -z -f3 | tr -d '\0' | sed -e 's/(//' | sed -e 's/)//')"
+    echo "$output"
 }
 
 function FindHtmlOnPages() {
@@ -35,9 +37,11 @@ function FindHtmlOnPages() {
     for link in $(timeout 5 wget -qO- "$url" | grep "href" | cut -d '"' -f2 | grep http)
     do
         if verifyIfElementExistsOnArray "$link" "${verifiedUrls[@]}"; then
-            echo "URL já verificada: $link"
+            continue
         else
-            echo "Verificando URL: $link $(DoPingOnUrl $url)"
+            strToWrite="Verificando URL: $link - $(DoPingOnUrl $url)"
+            echo "$strToWrite"
+            WriteInformationsOnFile "$strToWrite"
             verifiedUrls+=("$link")
             FindHtmlOnPages $link "${verifiedUrls[@]}"
         fi
@@ -46,10 +50,7 @@ function FindHtmlOnPages() {
 
 WriteInformationsOnFile()
 {
-    for valor in "${verifiedUrls[@]}"
-    do
-        echo $valor >> url.txt
-    done
+    echo $1 >> urls.txt
 }
 
 if [ -z "$1" ]
@@ -57,6 +58,5 @@ then
     HandleNullArgumentError
 else
     FindHtmlOnPages $1
-    WriteInformationsOnFile
-    echo "Finalizado"
+    echo "Finalizado!"
 fi
