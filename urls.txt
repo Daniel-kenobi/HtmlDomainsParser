@@ -1,7 +1,0 @@
-Verificando URL: http://37.59.174.233:8080 - 37.59.174.225
-Verificando URL: http://intranet.businesscorp.com.br - 37.59.174.225
-Verificando URL: http://mail.businesscorp.com.br - 37.59.174.225
-Verificando URL: http://parsingok.businesscorp.com.br - 37.59.174.225
-Verificando URL: http://srvkey.businesscorp.com.br - 37.59.174.225
-Verificando URL: http://rh.businesscorp.com.br - 37.59.174.225
-Verificando URL: https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic - 37.59.174.229
